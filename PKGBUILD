@@ -19,5 +19,5 @@ package() {
     mkdir -p ${pkgdir}/usr/lib/systemd/system
     cp ${srcdir}/amdgpu-fancontrol.service ${pkgdir}/usr/lib/systemd/system/
     mkdir -p ${pkgdir}/etc
-    cp ${srcdir}/etc-amdgpu-fancontrol.cfg ${pkgdir}/etc/amdgpu-fancontrol.cfg
+    cp ${srcdir}/amdgpu-fancontrol.cfg ${pkgdir}/etc/amdgpu-fancontrol.cfg
 }
