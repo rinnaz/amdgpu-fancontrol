@@ -71,6 +71,7 @@ function interpolate_pwm {
 
   if [[ $TEMP -le ${TEMPS[0]} ]]; then
     # below first point in list, set to min speed
+    sleep 10
     set_pwm "${PWMS[i]}"
     return
   fi
