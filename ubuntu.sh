@@ -7,9 +7,8 @@ fi
 
 # Copy files
 cp amdgpu-fancontrol /usr/bin/
-mkdir -p /usr/lib/systemd/system
-cp amdgpu-fancontrol.service /usr/lib/systemd/system/
-cp etc-amdgpu-fancontrol.cfg /etc/
+cp amdgpu-fancontrol.service /etc/systemd/system/
+cp amdgpu-fancontrol.cfg /etc/
 
 # Enable & start service
 systemctl enable amdgpu-fancontrol.service
