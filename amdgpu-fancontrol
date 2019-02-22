@@ -56,6 +56,7 @@ function set_pwm {
   elif [ "$NEW_PWM" -eq "${PWMS[0]}" ] && [ "$OLD_PWM" -gt "${PWMS[0]}" ]; then
     echo "temp at last change was $TEMP_AT_LAST_PWM_CHANGE"
     echo "changing pwm to $NEW_PWM"
+    sleep 10
     echo "$NEW_PWM" > "$FILE_PWM"
     TEMP_AT_LAST_PWM_CHANGE=$(cat $FILE_TEMP)   
   else
@@ -71,7 +72,6 @@ function interpolate_pwm {
 
   if [[ $TEMP -le ${TEMPS[0]} ]]; then
     # below first point in list, set to min speed
-    sleep 10
     set_pwm "${PWMS[i]}"
     return
   fi
