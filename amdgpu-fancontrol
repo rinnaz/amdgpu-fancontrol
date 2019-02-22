@@ -53,6 +53,11 @@ function set_pwm {
     echo "changing pwm to $NEW_PWM"
     echo "$NEW_PWM" > "$FILE_PWM"
     TEMP_AT_LAST_PWM_CHANGE=$(cat $FILE_TEMP)
+  elif [ "$NEW_PWM" -eq "${PWMS[0]}" ] && [ "$OLD_PWM" -gt "${PWMS[0]}" ]; then
+    echo "temp at last change was $TEMP_AT_LAST_PWM_CHANGE"
+    echo "changing pwm to $NEW_PWM"
+    echo "$NEW_PWM" > "$FILE_PWM"
+    TEMP_AT_LAST_PWM_CHANGE=$(cat $FILE_TEMP)   
   else
     echo "not changing pwm, we just did at $TEMP_AT_LAST_PWM_CHANGE, next change when below $((TEMP_AT_LAST_PWM_CHANGE - HYSTERESIS))"
   fi
