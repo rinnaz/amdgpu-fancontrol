@@ -48,12 +48,15 @@ function set_pwm {
     set_fanmode 1
   fi
 
-  if [ "$NEW_PWM" -gt "$OLD_PWM" ] || [ -z "$TEMP_AT_LAST_PWM_CHANGE" ] || [ $(($(cat $FILE_TEMP) + HYSTERESIS)) -le "$TEMP_AT_LAST_PWM_CHANGE" ]; then
+  if [ "$NEW_PWM" -gt "$OLD_PWM" ] \
+  || [ -z "$TEMP_AT_LAST_PWM_CHANGE" ] \
+  || [ $(($(cat $FILE_TEMP) + HYSTERESIS)) -le "$TEMP_AT_LAST_PWM_CHANGE" ]; then
     echo "temp at last change was $TEMP_AT_LAST_PWM_CHANGE"
     echo "changing pwm to $NEW_PWM"
     echo "$NEW_PWM" > "$FILE_PWM"
     TEMP_AT_LAST_PWM_CHANGE=$(cat $FILE_TEMP)
-  elif [ "$NEW_PWM" -eq "${PWMS[0]}" ] && [ "$OLD_PWM" -gt "$NEW_PWM" ]; then
+  elif [ "$NEW_PWM" -eq "${PWMS[0]}" ] \
+  &&   [ "$OLD_PWM" -gt "$NEW_PWM" ]; then
     echo "temp at last change was $TEMP_AT_LAST_PWM_CHANGE"
     echo "changing pwm to $NEW_PWM"
     sleep 20
