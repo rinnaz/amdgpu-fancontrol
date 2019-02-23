@@ -47,6 +47,8 @@ function set_pwm {
     echo "Fanmode not set to manual."
     set_fanmode 1
   fi
+  
+  echo "$PWM_AT_LAST_PWM_CHANGE" > "$FILE_PWM"
 
   if [ "$NEW_PWM" -gt "$OLD_PWM" ] \
   || [ -z "$TEMP_AT_LAST_PWM_CHANGE" ] \
@@ -55,13 +57,7 @@ function set_pwm {
     echo "changing pwm to $NEW_PWM"
     echo "$NEW_PWM" > "$FILE_PWM"
     TEMP_AT_LAST_PWM_CHANGE=$(cat $FILE_TEMP)
-  elif [ "$NEW_PWM" -eq "${PWMS[0]}" ] \
-  &&   [ "$OLD_PWM" -gt "$NEW_PWM" ]; then
-    echo "temp at last change was $TEMP_AT_LAST_PWM_CHANGE"
-    echo "changing pwm to $NEW_PWM"
-    sleep 20
-    echo "$NEW_PWM" > "$FILE_PWM"
-    TEMP_AT_LAST_PWM_CHANGE=$(cat $FILE_TEMP)   
+    PWM_AT_LAST_PWM_CHANGE=$(cat $FILE_PWM)
   else
     echo "not changing pwm, we just did at $TEMP_AT_LAST_PWM_CHANGE, next change when below $((TEMP_AT_LAST_PWM_CHANGE - HYSTERESIS))"
   fi
