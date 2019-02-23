@@ -53,7 +53,7 @@ function set_pwm {
     echo "changing pwm to $NEW_PWM"
     echo "$NEW_PWM" > "$FILE_PWM"
     TEMP_AT_LAST_PWM_CHANGE=$(cat $FILE_TEMP)
-  elif [ "$NEW_PWM" -eq "${PWMS[0]}" ] && [ "$OLD_PWM" -gt "${PWMS[0]}" ]; then
+  elif [ "$NEW_PWM" -eq "${PWMS[0]}" ] && [ "$OLD_PWM" -gt "$NEW_PWM" ]; then
     echo "temp at last change was $TEMP_AT_LAST_PWM_CHANGE"
     echo "changing pwm to $NEW_PWM"
     sleep 20
