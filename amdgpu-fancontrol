@@ -56,7 +56,7 @@ function set_pwm {
   elif [ "$NEW_PWM" -eq "${PWMS[0]}" ] && [ "$OLD_PWM" -gt "${PWMS[0]}" ]; then
     echo "temp at last change was $TEMP_AT_LAST_PWM_CHANGE"
     echo "changing pwm to $NEW_PWM"
-    sleep 10
+    sleep 20
     echo "$NEW_PWM" > "$FILE_PWM"
     TEMP_AT_LAST_PWM_CHANGE=$(cat $FILE_TEMP)   
   else
@@ -65,23 +65,26 @@ function set_pwm {
 }
 
 function interpolate_pwm {
-  i=0
   TEMP=$(cat $FILE_TEMP)
 
   echo "current temp: $TEMP"
 
   if [[ $TEMP -le ${TEMPS[0]} ]]; then
     # below first point in list, set to min speed
-    set_pwm "${PWMS[i]}"
+    set_pwm "${PWMS[0]}"
     return
   fi
 
-  for i in "${!TEMPS[@]}"; do
-    if [[ $i -eq ${TEMPS[-1]} ]]; then
-      # hit last point in list, set to max speed
-      set_pwm "${PWMS[i]}"
-      return
-    elif [[ $TEMP -gt ${TEMPS[$i]} ]]; then
+  if [[ $TEMP -gt ${TEMPS[-1]} ]]; then
+    # hit last point in list, set to max speed
+    set_pwm "${PWMS[-1]}"
+    return
+  fi
+  
+  INDEXES=(${!TEMPS[@]})
+  # begin with i = 1
+  for i in ${INDEXES[@]:1}; do
+    if [[ $TEMP -gt ${TEMPS[$i]} ]]; then
       continue
     fi
 
@@ -90,10 +93,17 @@ function interpolate_pwm {
     HIGHERTEMP=${TEMPS[i]}
     LOWERPWM=${PWMS[i-1]}
     HIGHERPWM=${PWMS[i]}
+    
+    if [[ $LOWERTEMP -eq $HIGHERTEMP ]]; then
+      # AVOID DIVISION BY ZERO
+      set_pwm "${PWMS[i]}"
+      continue
+    fi
+
     PWM=$(echo "( ( $TEMP - $LOWERTEMP ) * ( $HIGHERPWM - $LOWERPWM ) / ( $HIGHERTEMP - $LOWERTEMP ) ) + $LOWERPWM" | bc)
     echo "interpolated pwm value for temperature $TEMP is: $PWM"
     set_pwm "$PWM"
-    return
+    return  
   done
 }
 
