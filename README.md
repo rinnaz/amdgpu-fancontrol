@@ -2,23 +2,23 @@
 
 ## Purpose
 
-This simple bash script was designed to control AMD Radeon graphics cards fan pwm. 
+This bash script was designed to control AMD Radeon graphics cards fan PWM. 
 
 ## How to use
 
-To install run `install-ubuntu.sh` as sudo:
+To install run `install-ubuntu.sh` with sudo:
 
 ```bash
 sudo ./install-ubuntu.sh
 ```
 
-To update script and config run `update.sh` as sudo:
+To update script and config run `update.sh` with sudo:
 
 ```bash
 sudo ./update.sh
 ```
 
-Customize temp/pwm values and hysteresis/interval in the config file:
+Customize temp, PWM, hysteresis and update interval values in the config file:
 
 ```bash
 # Temperatures in degrees C * 1000
